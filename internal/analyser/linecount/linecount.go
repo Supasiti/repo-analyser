@@ -28,7 +28,7 @@ func NewLineCount(numWorker int) *LineCount {
 	return &LineCount{Result: initResult, NumWorker: numWorker}
 }
 
-func (l *LineCount) Listen(ch <-chan string, done chan<- struct{}) {
+func (l *LineCount) Listen(ch <-chan string) {
 	var wg sync.WaitGroup
 	for range l.NumWorker {
 		wg.Add(1)
@@ -44,7 +44,6 @@ func (l *LineCount) Listen(ch <-chan string, done chan<- struct{}) {
 	// display result
 	slog.Info("Preparing report")
 	Display(l.Result)
-	close(done)
 }
 
 func (l *LineCount) ProcessFile(ch <-chan string) {

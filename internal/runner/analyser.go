@@ -3,7 +3,7 @@ package runner
 import "strings"
 
 type Analyser interface {
-	Listen(<-chan string, chan<- struct{})
+	Listen(<-chan string)
 }
 
 type mockAnalyser struct {
@@ -18,7 +18,7 @@ func newMockAnalyser(root string) *mockAnalyser {
 	}
 }
 
-func (m *mockAnalyser) Listen(ch <-chan string, done chan<- struct{}) {
+func (m *mockAnalyser) Listen(ch <-chan string) {
 	for {
 		filename, ok := <-ch
 		if !ok {
@@ -29,6 +29,4 @@ func (m *mockAnalyser) Listen(ch <-chan string, done chan<- struct{}) {
 
 		m.Filenames[relFile] = true
 	}
-
-	close(done)
 }

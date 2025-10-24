@@ -22,7 +22,10 @@ func (r *Runner) Analyse(srcPath string) error {
 	fileCh := make(chan string, r.QueueSize)
 	done := make(chan struct{})
 
-	go r.Analyser.Listen(fileCh, done)
+	go func() {
+		defer close(done)
+		r.Analyser.Listen(fileCh)
+	}()
 
 	err := filepath.WalkDir(srcPath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
