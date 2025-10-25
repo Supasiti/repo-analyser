@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	srcPath   = "./testdata/repos/prac-aws-serverless-ts/src"
+	srcPath   = "./testdata/repos/sample-ts/src"
 	numWorker = 2
 )
 

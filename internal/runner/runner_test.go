@@ -15,7 +15,7 @@ func TestRunner_Analyse(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		cwd, _ := os.Getwd()
 		root := path.Join(cwd, "../..")
-		src := path.Join(root, "testdata/repos/prac-aws-serverless-ts/src")
+		src := path.Join(root, "testdata/repos/sample-ts/src")
 
 		a := newMockAnalyser(root)
 		r := &Runner{
@@ -23,23 +23,23 @@ func TestRunner_Analyse(t *testing.T) {
 			Analyser:  a,
 		}
 		expectedFiles := []string{
-			"testdata/repos/prac-aws-serverless-ts/src/common/error.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/common/jsonResponse.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/common/logger.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/dao/docClient.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/dao/types.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/dao/userDao.test.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/dao/userDao.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/dao/util.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/handlers/createUser.test.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/handlers/createUser.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/handlers/getUser.test.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/handlers/getUser.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/handlers/messageLogger.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/models/types.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/sns/publisher.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/sns/snsClient.ts",
-			"testdata/repos/prac-aws-serverless-ts/src/testData/mockUser.ts",
+			"testdata/repos/sample-ts/src/common/error.ts",
+			"testdata/repos/sample-ts/src/common/jsonResponse.ts",
+			"testdata/repos/sample-ts/src/common/logger.ts",
+			"testdata/repos/sample-ts/src/dao/docClient.ts",
+			"testdata/repos/sample-ts/src/dao/types.ts",
+			"testdata/repos/sample-ts/src/dao/userDao.test.ts",
+			"testdata/repos/sample-ts/src/dao/userDao.ts",
+			"testdata/repos/sample-ts/src/dao/util.ts",
+			"testdata/repos/sample-ts/src/handlers/createUser.test.ts",
+			"testdata/repos/sample-ts/src/handlers/createUser.ts",
+			"testdata/repos/sample-ts/src/handlers/getUser.test.ts",
+			"testdata/repos/sample-ts/src/handlers/getUser.ts",
+			"testdata/repos/sample-ts/src/handlers/messageLogger.ts",
+			"testdata/repos/sample-ts/src/models/types.ts",
+			"testdata/repos/sample-ts/src/sns/publisher.ts",
+			"testdata/repos/sample-ts/src/sns/snsClient.ts",
+			"testdata/repos/sample-ts/src/testData/mockUser.ts",
 		}
 
 		r.Analyse(src)
