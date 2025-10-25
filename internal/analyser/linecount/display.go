@@ -7,19 +7,15 @@ import (
 	"strings"
 )
 
-func Display(res Result) error {
-	// sort all keys
-	keys := make([]string, len(res))
-	i := 0
-	colLengths := []int{5, 5} // 5 = len("Files"), 5 = len("Lines")
-	for key, value := range res {
-		keys[i] = key
-		colLengths[0] = max(colLengths[0], len(key))
-		colLengths[1] = max(colLengths[1], len(strconv.Itoa(value)))
-		i++
+func Display(res []*Result, maxFilename, maxCount int) error {
+	colLengths := []int{
+		max(maxFilename, 5),                 // 5 = len("Files")
+		max(len(strconv.Itoa(maxCount)), 5), // 5 = len("Lines")
 	}
 
-	slices.Sort(keys)
+	slices.SortFunc(res, func(a, b *Result) int {
+		return strings.Compare(a.File, b.File)
+	})
 
 	// header
 	fmt.Println()
@@ -31,10 +27,9 @@ func Display(res Result) error {
 	total := 0
 
 	// body
-	for _, key := range keys {
-		count := res[key]
-		fmt.Printf("%-*s %+*v\n", colLengths[0], key, colLengths[1], count)
-		total += count
+	for _, r := range res {
+		fmt.Printf("%-*s %+*v\n", colLengths[0], r.File, colLengths[1], r.Count)
+		total += r.Count
 	}
 
 	// total

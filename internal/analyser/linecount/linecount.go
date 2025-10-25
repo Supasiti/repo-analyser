@@ -10,22 +10,27 @@ import (
 	"sync"
 )
 
-type Result = map[string]int
+type Result struct {
+	File  string
+	Count int
+}
 
 type LineCount struct {
-	Result    Result
-	NumWorker int
-	mu        sync.Mutex
+	MaxCount    int
+	MaxFilename int
+	NumWorker   int
+	mu          sync.Mutex
+	Results     []*Result
 }
 
 const (
-	initialMapSize = 128
+	initialCapacity = 128
 )
 
 func NewLineCount(numWorker int) *LineCount {
-	initResult := make(Result, initialMapSize)
+	initResult := make([]*Result, 0, initialCapacity)
 
-	return &LineCount{Result: initResult, NumWorker: numWorker}
+	return &LineCount{Results: initResult, NumWorker: numWorker}
 }
 
 func (l *LineCount) Listen(ch <-chan string) {
@@ -43,7 +48,7 @@ func (l *LineCount) Listen(ch <-chan string) {
 
 	// display result
 	slog.Info("Preparing report")
-	Display(l.Result)
+	Display(l.Results, l.MaxFilename, l.MaxCount)
 }
 
 func (l *LineCount) ProcessFile(ch <-chan string) {
@@ -85,7 +90,9 @@ func (l *LineCount) AnalyseFile(filename string) error {
 	}
 
 	l.mu.Lock()
-	l.Result[filename] = numLine
+	l.Results = append(l.Results, &Result{File: filename, Count: numLine})
+	l.MaxCount = max(l.MaxCount, numLine)
+	l.MaxFilename = max(l.MaxFilename, len(filename))
 	l.mu.Unlock()
 
 	return nil
